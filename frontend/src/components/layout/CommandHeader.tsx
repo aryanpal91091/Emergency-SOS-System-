@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldAlert, Activity, Wifi, WifiOff, Radio, RefreshCw } from 'lucide-react';
+import { ShieldAlert, Activity, Wifi, WifiOff, Radio, RefreshCw, LogOut, User as UserIcon } from 'lucide-react';
 import { socket } from '../../services/socket';
 import { emergencyApi } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 
 export const CommandHeader: React.FC = () => {
+  const { user, logout } = useAuth();
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [activeCount, setActiveCount] = useState<number>(0);
   const [refreshing, setRefreshing] = useState(false);
@@ -62,7 +64,7 @@ export const CommandHeader: React.FC = () => {
           </div>
         </div>
 
-        {/* Real-time Status Telemetry */}
+        {/* Real-time Status Telemetry & User Session */}
         <div className="flex items-center gap-3">
           {/* Active Emergencies Meter */}
           <div className="bg-slate-950 px-3.5 py-1.5 rounded-lg border border-slate-800 flex items-center gap-2 text-xs font-mono">
@@ -93,6 +95,25 @@ export const CommandHeader: React.FC = () => {
               </>
             )}
           </div>
+
+          {/* User Profile & Sign Out Action */}
+          {user && (
+            <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
+              <div className="hidden md:flex flex-col text-right">
+                <span className="text-xs font-bold text-white leading-tight font-mono">{user.name}</span>
+                <span className="text-[10px] text-red-400 font-mono font-bold uppercase">{user.role}</span>
+              </div>
+
+              <button
+                onClick={logout}
+                title="Sign Out of Session"
+                className="bg-slate-950 hover:bg-red-950/80 hover:text-red-400 text-slate-400 border border-slate-800 hover:border-red-500/40 px-3 py-1.5 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Sign Out</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

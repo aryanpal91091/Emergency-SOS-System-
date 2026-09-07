@@ -3,6 +3,7 @@ import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import authRoutes from './routes/authRoutes';
 import emergencyRoutes from './routes/emergencyRoutes';
 import ambulanceRoutes from './routes/ambulanceRoutes';
@@ -48,6 +49,32 @@ app.get('/api/health', (req, res) => {
     status: 'online',
     service: 'ResQRoute Emergency Engine',
     timestamp: new Date().toISOString(),
+  });
+});
+
+// Serve frontend static build if available (Unified Full-Stack Deployment)
+const frontendDist = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendDist));
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/socket.io')) {
+    return next();
+  }
+  const indexHtml = path.join(frontendDist, 'index.html');
+  res.sendFile(indexHtml, (err) => {
+    if (err) {
+      res.status(200).send(`
+        <!DOCTYPE html>
+        <html>
+          <head><title>ResQRoute Emergency Engine</title></head>
+          <body style="background:#030712;color:#f3f4f6;font-family:sans-serif;padding:2rem;text-align:center;">
+            <h1 style="color:#ef4444;">🚨 ResQRoute Emergency Engine Backend Active</h1>
+            <p>API service is operational.</p>
+            <p><a href="/api/health" style="color:#60a5fa;">Check /api/health</a></p>
+          </body>
+        </html>
+      `);
+    }
   });
 });
 

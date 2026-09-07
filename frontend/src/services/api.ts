@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const rawApiUrl = import.meta.env.VITE_API_URL || 'https://resqroute-backend.onrender.com';
+const API_BASE_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 12000,
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -26,11 +27,21 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // If token is invalid or expired (401), clean up if not actively logging in
+    if (error.response?.status === 401 && !error.config?.url?.includes('/auth/login')) {
+      const existingToken = localStorage.getItem('resqroute_token');
+      if (existingToken) {
+        console.warn('⚡ [API Interceptor] Token expired or invalid, clearing session.');
+        localStorage.removeItem('resqroute_token');
+        localStorage.removeItem('resqroute_user');
+      }
+    }
+
     const customError = {
       message:
         error.response?.data?.message ||
         error.message ||
-        'Network error. Backend service may be offline.',
+        'Network error. Backend service may be offline or starting up.',
       status: error.response?.status || 500,
     };
     console.warn('⚡ [API Interceptor] Gracefully caught API error:', customError);
@@ -38,7 +49,23 @@ api.interceptors.response.use(
   }
 );
 
-// API Service Contracts
+// Authentication API Contracts
+export const authApi = {
+  login: (credentials: { email: string; password: string }) =>
+    api.post('/auth/login', credentials),
+
+  register: (data: {
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    role?: string;
+  }) => api.post('/auth/register', data),
+
+  getMe: () => api.get('/auth/me'),
+};
+
+// Emergency Service Contracts
 export const emergencyApi = {
   triggerSOS: (data: {
     latitude: number;
@@ -55,23 +82,27 @@ export const emergencyApi = {
   updateStatus: (id: string, status: string) => api.patch(`/emergency/${id}/status`, { status }),
 };
 
+// Ambulance Service Contracts
 export const ambulanceApi = {
   getAll: () => api.get('/ambulances'),
   updateLocation: (id: string, latitude: number, longitude: number, status?: string) =>
     api.patch(`/ambulances/${id}/location`, { latitude, longitude, status }),
 };
 
+// Hospital Service Contracts
 export const hospitalApi = {
   getAll: () => api.get('/hospitals'),
   updateAlertStatus: (alertId: string, status: string, notes?: string) =>
     api.patch(`/hospitals/alerts/${alertId}`, { status, notes }),
 };
 
+// Traffic Signal Service Contracts
 export const trafficApi = {
   getSignals: () => api.get('/traffic/signals'),
   updateSignal: (id: string, status: string) => api.patch(`/traffic/signals/${id}`, { status }),
 };
 
+// Simulation Contracts
 export const simulationApi = {
   triggerAccident: (data?: any) => api.post('/simulation/trigger-accident', data || {}),
   reset: () => api.post('/simulation/reset'),

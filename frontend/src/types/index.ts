@@ -27,6 +27,8 @@ export interface User {
   email: string;
   phone: string;
   role: Role;
+  ambulanceId?: string | null;
+  ambulance?: Ambulance | null;
 }
 
 export interface Ambulance {

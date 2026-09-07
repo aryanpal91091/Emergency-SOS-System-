@@ -1,5 +1,6 @@
 import React from 'react';
-import { ShieldAlert, Navigation, Radio, Hospital, ShieldCheck, LayoutDashboard, ChevronRight } from 'lucide-react';
+import { ShieldAlert, Navigation, Radio, Hospital, ShieldCheck, LayoutDashboard, LogOut } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 export type TabKey = 'overview' | 'citizen' | 'driver' | 'police' | 'hospital' | 'admin';
 
@@ -18,6 +19,8 @@ export const navItems: { id: TabKey; label: string; icon: any; category: string;
 ];
 
 export const SidebarNav: React.FC<SidebarNavProps> = ({ activeTab, onTabChange }) => {
+  const { user, logout } = useAuth();
+
   return (
     <>
       {/* DESKTOP LEFT SIDEBAR */}
@@ -60,12 +63,31 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({ activeTab, onTabChange }
           </div>
         </div>
 
-        <div className="mt-auto bg-slate-950/90 p-3.5 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1.5 font-mono">
-          <div className="flex items-center justify-between">
-            <span className="text-slate-200 font-bold">ResQRoute Protocol</span>
-            <span className="text-[10px] bg-emerald-950 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/30">v1.0</span>
+        {/* User Session & Logout Panel in Desktop Sidebar */}
+        <div className="mt-auto space-y-3 font-mono">
+          {user && (
+            <div className="bg-slate-950/90 p-3 rounded-xl border border-slate-800/90 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-white truncate max-w-[130px]">{user.name}</span>
+                <span className="text-[9px] font-bold text-red-400 bg-red-950/80 px-1.5 py-0.5 rounded border border-red-500/30">
+                  {user.role}
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-500 truncate">{user.email}</div>
+              <button
+                onClick={logout}
+                className="w-full mt-1 bg-slate-900 hover:bg-red-950/80 hover:text-red-400 text-slate-400 border border-slate-800 hover:border-red-500/40 py-1.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <LogOut className="w-3 h-3" />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          )}
+
+          <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800/60 text-[10px] text-slate-500 flex items-center justify-between">
+            <span>ResQRoute Engine</span>
+            <span className="text-emerald-400 font-bold">LIVE</span>
           </div>
-          <div className="text-[10px] text-slate-500">Local Backend: :5000/api</div>
         </div>
       </aside>
 
