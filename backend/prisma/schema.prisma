@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String
+  password  String
+  role      String   @default("CITIZEN") // CITIZEN, DRIVER, POLICE, HOSPITAL, ADMIN
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ambulance   Ambulance?
+  emergencies Emergency[]
+}
+
+model Ambulance {
+  id             String   @id @default(uuid())
+  vehicleNumber  String   @unique
+  driverId       String?  @unique
+  driver         User?    @relation(fields: [driverId], references: [id])
+  latitude       Float
+  longitude      Float
+  status         String   @default("AVAILABLE") // AVAILABLE, RESPONDING, BUSY, OFFLINE
+  vehicleType    String   @default("ADVANCED_ICU") // BASIC, ADVANCED_ICU, NEONATAL, TRAUMA
+  equipmentLevel String   @default("Full ICU & Ventilator")
+  hospitalId     String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  emergencies Emergency[]
+}
+
+model Hospital {
+  id            String   @id @default(uuid())
+  name          String
+  latitude      Float
+  longitude     Float
+  address       String
+  totalBeds     Int      @default(50)
+  availableBeds Int      @default(12)
+  icuBeds       Int      @default(5)
+  contactPhone  String
+  createdAt     DateTime @default(now())
+
+  emergencies Emergency[]
+  alerts      HospitalAlert[]
+}
+
+model TrafficSignal {
+  id                String   @id @default(uuid())
+  signalCode        String   @unique
+  name              String
+  latitude          Float
+  longitude         Float
+  status            String   @default("NORMAL") // NORMAL, PREPARE, GREEN_CORRIDOR
+  intersectionGroup String
+  createdAt         DateTime @default(now())
+
+  alerts TrafficAlert[]
+}
+
+model Emergency {
+  id                  String   @id @default(uuid())
+  citizenId           String
+  citizen             User     @relation(fields: [citizenId], references: [id])
+  patientName         String
+  patientPhone        String
+  emergencyType       String   // ACCIDENT, CARDIAC, STROKE, TRAUMA, OTHER
+  priority            String   @default("CRITICAL") // CRITICAL, HIGH, MEDIUM
+  status              String   @default("SOS_TRIGGERED")
+  latitude            Float
+  longitude           Float
+  address             String
+  assignedAmbulanceId String?
+  assignedAmbulance   Ambulance? @relation(fields: [assignedAmbulanceId], references: [id])
+  targetHospitalId    String?
+  targetHospital      Hospital?  @relation(fields: [targetHospitalId], references: [id])
+  etaMinutes          Float?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  routes        EmergencyRoute[]
+  hospAlerts    HospitalAlert[]
+  trafficAlerts TrafficAlert[]
+  history       EmergencyStatusHistory[]
+}
+
+model EmergencyRoute {
+  id                   String    @id @default(uuid())
+  emergencyId          String
+  emergency            Emergency @relation(fields: [emergencyId], references: [id], onDelete: Cascade)
+  routeGeoJson         String
+  totalDistanceKm      Float
+  estimatedDurationMin Float
+  upcomingSignalsJson  String
+  createdAt            DateTime  @default(now())
+}
+
+model HospitalAlert {
+  id               String    @id @default(uuid())
+  emergencyId      String
+  emergency        Emergency @relation(fields: [emergencyId], references: [id], onDelete: Cascade)
+  hospitalId       String
+  hospital         Hospital  @relation(fields: [hospitalId], references: [id])
+  status           String    @default("PENDING") // PENDING, PREPARING, READY, PATIENT_ARRIVED
+  patientCondition String
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model TrafficAlert {
+  id             String        @id @default(uuid())
+  emergencyId    String
+  emergency      Emergency     @relation(fields: [emergencyId], references: [id], onDelete: Cascade)
+  signalId       String
+  signal         TrafficSignal @relation(fields: [signalId], references: [id])
+  actionRequired String
+  status         String        @default("PENDING")
+  createdAt      DateTime      @default(now())
+}
+
+model EmergencyStatusHistory {
+  id          String    @id @default(uuid())
+  emergencyId String
+  emergency   Emergency @relation(fields: [emergencyId], references: [id], onDelete: Cascade)
+  status      String
+  timestamp   DateTime  @default(now())
+  updatedBy   String
+}
