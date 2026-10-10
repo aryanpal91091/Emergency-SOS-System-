@@ -140,6 +140,7 @@ export const EmergencyMap: React.FC<EmergencyMapProps> = ({
   zoom = 13,
   height = '460px',
 }) => {
+  const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
   const polylinePositions: [number, number][] = routePolyline
     .filter((p) => typeof p.lat === 'number' && typeof p.lng === 'number' && !isNaN(p.lat) && !isNaN(p.lng))
     .map((p) => [p.lat, p.lng]);
@@ -149,7 +150,7 @@ export const EmergencyMap: React.FC<EmergencyMapProps> = ({
   );
 
   return (
-    <div style={{ height, width: '100%', borderRadius: '0.85rem', overflow: 'hidden' }} className="relative shadow-2xl border border-slate-800/80 bg-slate-950">
+    <div style={{ height, width: '100%', borderRadius: '0.75rem', overflow: 'hidden' }} className="relative shadow-2xl border border-slate-800/80 bg-slate-950">
       {/* Map Legend Overlay */}
       <div className="absolute top-3 right-3 z-[1000] bg-slate-950/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800 shadow-lg text-[10px] font-mono text-slate-300 flex items-center gap-3 hidden sm:flex">
         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> Patient</span>
@@ -159,10 +160,13 @@ export const EmergencyMap: React.FC<EmergencyMapProps> = ({
       </div>
 
       <MapContainer center={center} zoom={zoom} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
-        {/* Esri World Dark Gray Canvas: Crisp, clean dark command center tiles without any watermarks or API key requirements */}
         <TileLayer
           attribution='&copy; <a href="https://www.esri.com/">Esri</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+          url={
+            isLightMode
+              ? 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+              : 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+          }
           maxZoom={16}
         />
 

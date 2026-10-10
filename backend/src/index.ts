@@ -4,6 +4,7 @@ import { Server as SocketIOServer } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import authRoutes from './routes/authRoutes';
 import emergencyRoutes from './routes/emergencyRoutes';
 import ambulanceRoutes from './routes/ambulanceRoutes';
@@ -52,30 +53,45 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Serve frontend static build if available (Unified Full-Stack Deployment)
-const frontendDist = path.join(__dirname, '../../frontend/dist');
+// Serve frontend static build (Unified Full-Stack Deployment)
+const possibleDistPaths = [
+  path.resolve(__dirname, 'public'),
+  path.resolve(__dirname, '../public'),
+  path.resolve(__dirname, '../../frontend/dist'),
+  path.resolve(__dirname, '../frontend/dist'),
+  path.resolve(process.cwd(), 'public'),
+  path.resolve(process.cwd(), 'dist/public'),
+  path.resolve(process.cwd(), 'frontend/dist'),
+  path.resolve(process.cwd(), '../frontend/dist'),
+];
+
+const frontendDist =
+  possibleDistPaths.find((dir) => fs.existsSync(path.join(dir, 'index.html'))) ||
+  path.resolve(__dirname, 'public');
+
+console.log(`📦 Serving frontend static assets from: ${frontendDist}`);
 app.use(express.static(frontendDist));
 
+// Client-side SPA routing: all non-API GET requests return frontend index.html
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api') || req.path.startsWith('/socket.io')) {
     return next();
   }
   const indexHtml = path.join(frontendDist, 'index.html');
-  res.sendFile(indexHtml, (err) => {
-    if (err) {
-      res.status(200).send(`
-        <!DOCTYPE html>
-        <html>
-          <head><title>ResQRoute Emergency Engine</title></head>
-          <body style="background:#030712;color:#f3f4f6;font-family:sans-serif;padding:2rem;text-align:center;">
-            <h1 style="color:#ef4444;">🚨 ResQRoute Emergency Engine Backend Active</h1>
-            <p>API service is operational.</p>
-            <p><a href="/api/health" style="color:#60a5fa;">Check /api/health</a></p>
-          </body>
-        </html>
-      `);
-    }
-  });
+  if (fs.existsSync(indexHtml)) {
+    return res.sendFile(indexHtml);
+  }
+  return res.status(200).send(`
+    <!DOCTYPE html>
+    <html>
+      <head><title>ResQRoute Emergency Engine</title></head>
+      <body style="background:#030712;color:#f3f4f6;font-family:sans-serif;padding:2rem;text-align:center;">
+        <h1 style="color:#ef4444;">🚨 ResQRoute Emergency Engine Backend Active</h1>
+        <p>API service is operational.</p>
+        <p><a href="/api/health" style="color:#60a5fa;">Check /api/health</a></p>
+      </body>
+    </html>
+  `);
 });
 
 const PORT = process.env.PORT || 5000;

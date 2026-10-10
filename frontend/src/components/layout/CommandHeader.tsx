@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldAlert, Activity, Wifi, WifiOff, Radio, RefreshCw, LogOut, User as UserIcon } from 'lucide-react';
+import { ShieldAlert, Activity, Wifi, WifiOff, LogOut, SunMedium, MoonStar } from 'lucide-react';
 import { socket } from '../../services/socket';
 import { emergencyApi } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
-export const CommandHeader: React.FC = () => {
+interface CommandHeaderProps {
+  theme?: 'dark' | 'light';
+  onToggleTheme?: () => void;
+}
+
+export const CommandHeader: React.FC<CommandHeaderProps> = ({
+  theme = 'dark',
+  onToggleTheme = () => undefined,
+}) => {
   const { user, logout } = useAuth();
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [activeCount, setActiveCount] = useState<number>(0);
@@ -95,6 +103,16 @@ export const CommandHeader: React.FC = () => {
               </>
             )}
           </div>
+
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            className="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-950/80 px-2.5 py-1.5 text-[11px] font-mono font-bold text-slate-300 transition-colors hover:border-red-500/40 hover:text-white"
+            aria-label="Toggle dark and light mode"
+          >
+            {theme === 'dark' ? <SunMedium className="h-3.5 w-3.5" /> : <MoonStar className="h-3.5 w-3.5" />}
+            <span className="hidden sm:inline">{theme === 'dark' ? 'Light' : 'Dark'} Mode</span>
+          </button>
 
           {/* User Profile & Sign Out Action */}
           {user && (

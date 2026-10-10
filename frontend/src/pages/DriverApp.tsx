@@ -162,7 +162,7 @@ export const DriverApp: React.FC = () => {
             Tactical Ambulance Console
           </div>
           <h2 className="text-2xl font-black text-slate-100 tracking-tight">Driver Dispatch & Navigation Unit</h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-400 mt-0.5 font-mono">
             Unit AMB-101 • Advanced ICU Equipment • Live GPS Telemetry Connected
           </p>
         </div>
@@ -217,7 +217,7 @@ export const DriverApp: React.FC = () => {
                 {activeEmergency.status === 'SOS_TRIGGERED' || activeEmergency.status === 'AMBULANCE_ASSIGNED' ? (
                   <button
                     onClick={() => handleStatusChange('EN_ROUTE_TO_PATIENT')}
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-950/60 border border-blue-400/40 active:scale-95 transition-all"
+                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-950/60 border border-blue-400/40 active:scale-95 transition-all cursor-pointer"
                   >
                     <Play className="w-4 h-4 fill-current" />
                     <span>START RESPONSE — EN ROUTE TO PATIENT</span>
@@ -225,7 +225,7 @@ export const DriverApp: React.FC = () => {
                 ) : activeEmergency.status === 'EN_ROUTE_TO_PATIENT' ? (
                   <button
                     onClick={() => handleStatusChange('PATIENT_PICKED_UP')}
-                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-extrabold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-950/60 border border-amber-400/40 active:scale-95 transition-all"
+                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-extrabold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-950/60 border border-amber-400/40 active:scale-95 transition-all cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>PATIENT PICKED UP & STABILIZED</span>
@@ -233,7 +233,7 @@ export const DriverApp: React.FC = () => {
                 ) : activeEmergency.status === 'PATIENT_PICKED_UP' ? (
                   <button
                     onClick={() => handleStatusChange('EN_ROUTE_TO_HOSPITAL')}
-                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-950/60 border border-blue-400/40 active:scale-95 transition-all"
+                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-extrabold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-950/60 border border-blue-400/40 active:scale-95 transition-all cursor-pointer"
                   >
                     <Hospital className="w-4 h-4" />
                     <span>TRANSIT TO TRAUMA HOSPITAL</span>
@@ -241,7 +241,7 @@ export const DriverApp: React.FC = () => {
                 ) : activeEmergency.status === 'EN_ROUTE_TO_HOSPITAL' ? (
                   <button
                     onClick={() => handleStatusChange('PATIENT_ARRIVED')}
-                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 border border-emerald-400/40 active:scale-95 transition-all"
+                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold py-3.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/60 border border-emerald-400/40 active:scale-95 transition-all cursor-pointer"
                   >
                     <Check className="w-4 h-4 stroke-[3]" />
                     <span>ARRIVED AT HOSPITAL & TRANSFERRED</span>
@@ -256,7 +256,7 @@ export const DriverApp: React.FC = () => {
                 <button
                   onClick={startGPSNavigation}
                   disabled={isSimulatingMove}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl text-xs border border-slate-800 flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl text-xs border border-slate-800 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   <Navigation className={`w-3.5 h-3.5 text-blue-400 ${isSimulatingMove ? 'animate-spin' : ''}`} />
                   <span>{isSimulatingMove ? 'Simulating GPS Driving Route...' : 'Simulate GPS Driving Navigation'}</span>

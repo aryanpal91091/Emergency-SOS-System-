@@ -132,7 +132,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ onNavigate }) => {
         <button
           onClick={fetchData}
           disabled={loading}
-          className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all active:scale-95 shrink-0 shadow-md"
+          className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all active:scale-95 shrink-0 shadow-md cursor-pointer"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>Refresh Telemetry</span>
@@ -148,7 +148,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ onNavigate }) => {
           </div>
           <button
             onClick={fetchData}
-            className="bg-red-900 hover:bg-red-800 text-white px-3 py-1 rounded font-bold transition-colors"
+            className="bg-red-900 hover:bg-red-800 text-white px-3 py-1 rounded font-bold transition-colors cursor-pointer"
           >
             Retry Connection
           </button>
@@ -225,7 +225,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ onNavigate }) => {
                 </div>
                 <button
                   onClick={() => onNavigate('citizen')}
-                  className="text-[10px] font-mono text-red-400 hover:text-red-300 font-bold flex items-center gap-1"
+                  className="text-[10px] font-mono text-red-400 hover:text-red-300 font-bold flex items-center gap-1 cursor-pointer"
                 >
                   Trigger SOS <ArrowRight className="w-3 h-3" />
                 </button>
@@ -302,7 +302,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ onNavigate }) => {
             <div className="border-t border-slate-800 pt-4 grid grid-cols-2 gap-2">
               <button
                 onClick={() => onNavigate('driver')}
-                className="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-2.5 rounded-xl text-left transition-colors"
+                className="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-2.5 rounded-xl text-left transition-colors cursor-pointer"
               >
                 <Navigation className="w-4 h-4 text-blue-400 mb-1" />
                 <div className="text-xs font-bold text-slate-200 font-mono">Driver Unit</div>
@@ -311,7 +311,7 @@ export const OverviewPage: React.FC<OverviewPageProps> = ({ onNavigate }) => {
 
               <button
                 onClick={() => onNavigate('police')}
-                className="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-2.5 rounded-xl text-left transition-colors"
+                className="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-2.5 rounded-xl text-left transition-colors cursor-pointer"
               >
                 <Radio className="w-4 h-4 text-emerald-400 mb-1" />
                 <div className="text-xs font-bold text-slate-200 font-mono">Traffic Police</div>

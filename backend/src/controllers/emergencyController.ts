@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { Hospital } from '@prisma/client';
 import { prisma } from '../prisma/client';
 import { rankAndSelectBestAmbulance } from '../services/ai/ambulanceSelection';
 import { predictEmergencyETA, calculateDistanceKm } from '../services/ai/etaPredictor';
@@ -99,10 +98,10 @@ export async function triggerSOS(req: AuthenticatedRequest, res: Response) {
 
     // 4. Select nearest hospital with available beds
     const hospitals = await prisma.hospital.findMany();
-    let selectedHospital: Hospital | null = hospitals[0] || null;
+    let selectedHospital: any = hospitals[0] || null;
     let minHospDist = Infinity;
 
-    hospitals.forEach((h: Hospital) => {
+    hospitals.forEach((h: any) => {
       const dist = calculateDistanceKm(
         parseFloat(latitude),
         parseFloat(longitude),

@@ -115,7 +115,7 @@ export const PoliceDashboard: React.FC = () => {
           <button
             onClick={fetchData}
             disabled={loading}
-            className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all"
+            className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -178,7 +178,7 @@ export const PoliceDashboard: React.FC = () => {
 
                       <button
                         onClick={() => handleToggleSignal(sig.id, sig.status)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold border transition-all active:scale-95 ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold border transition-all active:scale-95 cursor-pointer ${
                           isGreen
                             ? 'bg-red-950 hover:bg-red-900 text-red-300 border-red-500/40'
                             : isPrepare

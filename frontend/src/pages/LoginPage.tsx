@@ -202,7 +202,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccessRedirect }) => {
                       key={acc.email}
                       type="button"
                       onClick={() => handleDemoSelect(acc)}
-                      className={`w-full p-2.5 rounded-xl border text-left transition-all duration-200 flex items-center justify-between gap-3 ${
+                      className={`w-full p-2.5 rounded-xl border text-left transition-all duration-200 flex items-center justify-between gap-3 cursor-pointer ${
                         isSelected
                           ? `${acc.color} ring-2 ring-red-500/50 shadow-md`
                           : 'bg-slate-950/70 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
@@ -253,7 +253,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccessRedirect }) => {
                     setLocalError(null);
                     clearError();
                   }}
-                  className={`flex-1 py-2 rounded-lg transition-all ${
+                  className={`flex-1 py-2 rounded-lg transition-all cursor-pointer ${
                     mode === 'signin'
                       ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md'
                       : 'text-slate-400 hover:text-white'
@@ -268,7 +268,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccessRedirect }) => {
                     setLocalError(null);
                     clearError();
                   }}
-                  className={`flex-1 py-2 rounded-lg transition-all ${
+                  className={`flex-1 py-2 rounded-lg transition-all cursor-pointer ${
                     mode === 'signup'
                       ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md'
                       : 'text-slate-400 hover:text-white'
@@ -386,7 +386,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccessRedirect }) => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>

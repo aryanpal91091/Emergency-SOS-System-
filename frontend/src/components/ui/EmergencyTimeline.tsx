@@ -52,12 +52,12 @@ export const EmergencyTimeline: React.FC<EmergencyTimelineProps> = ({ currentSta
 
   return (
     <div className={`w-full ${compact ? 'py-2' : 'py-4'}`}>
-      <div className="flex items-center justify-between relative">
-        {/* Track Line */}
-        <div className="absolute top-4 left-4 right-4 h-0.5 bg-slate-800 -z-0" />
+      <div className="grid grid-cols-6 relative w-full">
+        {/* Track Line - Center of Column 1 to Center of Column 6 */}
+        <div className="absolute top-4 left-[8.333%] right-[8.333%] h-0.5 bg-slate-800 -z-0" />
         <div
-          className="absolute top-4 left-4 h-0.5 bg-gradient-to-r from-red-500 via-rose-500 to-emerald-500 transition-all duration-500 -z-0"
-          style={{ width: `${(activeIndex / (TIMELINE_STEPS.length - 1)) * 100}%` }}
+          className="absolute top-4 left-[8.333%] h-0.5 bg-gradient-to-r from-red-500 via-rose-500 to-emerald-500 transition-all duration-500 -z-0"
+          style={{ width: `${(activeIndex / (TIMELINE_STEPS.length - 1)) * 83.333}%` }}
         />
 
         {TIMELINE_STEPS.map((step, idx) => {
@@ -66,10 +66,10 @@ export const EmergencyTimeline: React.FC<EmergencyTimelineProps> = ({ currentSta
           const isPending = idx > activeIndex;
 
           return (
-            <div key={step.key} className="flex flex-col items-center relative z-10 group">
+            <div key={step.key} className="flex flex-col items-center relative z-10 group w-full min-w-0 px-0.5 text-center">
               {/* Step Circle */}
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 shrink-0 ${
                   isDone
                     ? 'bg-emerald-500 text-slate-950 ring-4 ring-emerald-950/80 shadow-lg shadow-emerald-500/20'
                     : isCurrent
@@ -86,10 +86,10 @@ export const EmergencyTimeline: React.FC<EmergencyTimelineProps> = ({ currentSta
                 )}
               </div>
 
-              {/* Step Label */}
-              <div className="text-center mt-2 max-w-[90px] sm:max-w-[120px]">
+              {/* Step Label Container */}
+              <div className="w-full mt-2 min-w-0">
                 <div
-                  className={`text-[11px] font-bold leading-tight ${
+                  className={`text-[10px] sm:text-[11px] font-bold leading-tight break-words line-clamp-2 px-0.5 ${
                     isDone
                       ? 'text-emerald-400'
                       : isCurrent
@@ -100,7 +100,7 @@ export const EmergencyTimeline: React.FC<EmergencyTimelineProps> = ({ currentSta
                   {step.label}
                 </div>
                 {!compact && (
-                  <div className="text-[10px] text-slate-500 hidden md:block mt-0.5 truncate font-mono">
+                  <div className="text-[9px] sm:text-[10px] text-slate-500 hidden md:block mt-0.5 truncate font-mono w-full">
                     {step.desc}
                   </div>
                 )}

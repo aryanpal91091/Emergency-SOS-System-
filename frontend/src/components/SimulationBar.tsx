@@ -76,7 +76,7 @@ export const SimulationBar: React.FC<SimulationBarProps> = ({ onSimulationStarte
           <button
             onClick={handleTriggerAccident}
             disabled={loading}
-            className="flex items-center gap-1.5 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold px-3.5 py-1.5 rounded-xl shadow-lg shadow-red-950/50 transition-all active:scale-95 disabled:opacity-50 font-mono text-xs border border-red-400/30"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold px-3.5 py-1.5 rounded-xl shadow-lg shadow-red-950/50 transition-all active:scale-95 disabled:opacity-50 font-mono text-xs border border-red-400/30 cursor-pointer"
           >
             <Play className="w-3.5 h-3.5 fill-current" />
             <span>Simulate Accident & SOS</span>
@@ -85,7 +85,7 @@ export const SimulationBar: React.FC<SimulationBarProps> = ({ onSimulationStarte
           <button
             onClick={handleReset}
             disabled={loading}
-            className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold px-3 py-1.5 rounded-xl transition-all active:scale-95 disabled:opacity-50 font-mono text-xs"
+            className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold px-3 py-1.5 rounded-xl transition-all active:scale-95 disabled:opacity-50 font-mono text-xs cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Demo</span>

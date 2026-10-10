@@ -197,7 +197,7 @@ export const CitizenApp: React.FC = () => {
           </div>
           <button
             onClick={handleTriggerSOS}
-            className="bg-red-900 hover:bg-red-800 text-white px-3 py-1 rounded font-bold transition-colors"
+            className="bg-red-900 hover:bg-red-800 text-white px-3 py-1 rounded font-bold transition-colors cursor-pointer"
           >
             Retry SOS
           </button>
@@ -251,7 +251,7 @@ export const CitizenApp: React.FC = () => {
                     <button
                       key={type.id}
                       onClick={() => setEmergencyType(type.id)}
-                      className={`p-3 rounded-xl border text-xs font-bold font-mono flex items-center gap-2.5 transition-all ${
+                      className={`p-3 rounded-xl border text-xs font-bold font-mono flex items-center gap-2.5 transition-all cursor-pointer ${
                         emergencyType === type.id
                           ? `${type.color} ring-2 ring-red-500/50 shadow-md`
                           : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
@@ -361,7 +361,7 @@ export const CitizenApp: React.FC = () => {
               <div className="flex items-center gap-2 pt-2">
                 <button
                   onClick={handleResetEmergency}
-                  className="w-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold font-mono py-2.5 rounded-xl text-xs border border-slate-800 flex items-center justify-center gap-2 transition-colors"
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold font-mono py-2.5 rounded-xl text-xs border border-slate-800 flex items-center justify-center gap-2 transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-4 h-4" /> Reset Emergency State
                 </button>

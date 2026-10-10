@@ -75,4 +75,3 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'sm', s
     </span>
   );
 };
-

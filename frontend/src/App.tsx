@@ -13,6 +13,10 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { ShieldAlert, Activity, Zap, Loader2 } from 'lucide-react';
 import { Role } from './types';
 
+const THEME_STORAGE_KEY = 'resqroute-theme';
+
+type ThemeMode = 'dark' | 'light';
+
 const getRoleDefaultTab = (role?: Role): TabKey => {
   switch (role) {
     case 'CITIZEN':
@@ -41,6 +45,15 @@ const getInitialTab = (role?: Role): TabKey => {
 const AppContent: React.FC = () => {
   const { user, token, loading } = useAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('overview');
+  const [theme, setTheme] = useState<ThemeMode>(() => {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return stored === 'light' ? 'light' : 'dark';
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   // When user signs in or restores session, establish appropriate tab
   useEffect(() => {
@@ -86,7 +99,7 @@ const AppContent: React.FC = () => {
 
   // 3. Authenticated State -> Render Full Protected Platform Shell
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-red-500 selection:text-white">
+    <div data-theme={theme} className="theme-shell min-h-screen flex flex-col font-sans selection:bg-red-500 selection:text-white">
       {/* Top Banner - Product Value */}
       <div className="bg-slate-900 border-b border-slate-800 px-4 py-2 text-xs">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
@@ -111,13 +124,13 @@ const AppContent: React.FC = () => {
       <SimulationBar />
 
       {/* Global Command Header with User & Sign Out */}
-      <CommandHeader />
+      <CommandHeader theme={theme} onToggleTheme={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))} />
 
       {/* Main App Layout with Sidebar + Content */}
-      <div className="flex-1 flex max-w-7xl w-full mx-auto pb-16 lg:pb-0">
+      <div className="app-shell flex-1 flex max-w-7xl w-full mx-auto pb-16 lg:pb-0 min-h-0">
         <SidebarNav activeTab={activeTab} onTabChange={handleTabChange} />
 
-        <main className="flex-1 p-4 md:p-6 overflow-y-auto max-w-full">
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto overflow-x-hidden max-w-full min-h-0">
           {activeTab === 'overview' && <OverviewPage onNavigate={(tab) => handleTabChange(tab)} />}
           {activeTab === 'citizen' && <CitizenApp />}
           {activeTab === 'driver' && <DriverApp />}

@@ -97,7 +97,7 @@ export const HospitalDashboard: React.FC = () => {
           <button
             onClick={fetchHospitals}
             disabled={loading}
-            className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all"
+            className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -163,21 +163,21 @@ export const HospitalDashboard: React.FC = () => {
                         <button
                           onClick={() => handleAlertStatusChange(alert.id, 'PREPARING')}
                           disabled={alert.status === 'PREPARING'}
-                          className="bg-amber-950 hover:bg-amber-900 text-amber-300 border border-amber-500/40 px-3.5 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-40"
+                          className="bg-amber-950 hover:bg-amber-900 text-amber-300 border border-amber-500/40 px-3.5 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-40 cursor-pointer"
                         >
                           1. Prepare Trauma Bay
                         </button>
                         <button
                           onClick={() => handleAlertStatusChange(alert.id, 'READY')}
                           disabled={alert.status === 'READY'}
-                          className="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-500/40 px-3.5 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-40"
+                          className="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-500/40 px-3.5 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-40 cursor-pointer"
                         >
                           2. Mark Bay Ready & Staff Standby
                         </button>
                         <button
                           onClick={() => handleAlertStatusChange(alert.id, 'PATIENT_ARRIVED')}
                           disabled={alert.status === 'PATIENT_ARRIVED'}
-                          className="bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 px-3.5 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-40"
+                          className="bg-emerald-950 hover:bg-emerald-900 text-emerald-300 border border-emerald-500/40 px-3.5 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-40 cursor-pointer"
                         >
                           3. Confirm Patient Admitted
                         </button>
@@ -211,7 +211,7 @@ export const HospitalDashboard: React.FC = () => {
                 <button
                   key={hosp.id}
                   onClick={() => setSelectedHosp(hosp)}
-                  className={`w-full p-3.5 rounded-xl border text-left transition-all ${
+                  className={`w-full p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                     selectedHosp?.id === hosp.id
                       ? 'bg-slate-800 border-sky-500/50 shadow-lg text-white'
                       : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:text-slate-200'
